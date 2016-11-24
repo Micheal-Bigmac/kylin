@@ -61,12 +61,13 @@ public class DFSFileTable implements ReadableTable {
 
     @Override
     public TableSignature getSignature() throws IOException {
+        Pair<Long, Long> sizeAndLastModified;
         try {
-            Pair<Long, Long> sizeAndLastModified = getSizeAndLastModified(path);
-            return new TableSignature(path, sizeAndLastModified.getFirst(), sizeAndLastModified.getSecond());
+            sizeAndLastModified = getSizeAndLastModified(path);
         } catch (FileNotFoundException ex) {
-            return null;
+            sizeAndLastModified = Pair.newPair(-1L, 0L);
         }
+        return new TableSignature(path, sizeAndLastModified.getFirst(), sizeAndLastModified.getSecond());
     }
 
     @Override
